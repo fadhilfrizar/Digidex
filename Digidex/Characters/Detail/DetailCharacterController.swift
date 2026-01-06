@@ -2,67 +2,57 @@
 //  DetailCharacterController.swift
 //  RickAndMorty
 //
-//  Created by USER-MAC-GLIT-007 on 18/02/23.
-//
 
 import UIKit
 
 class DetailCharacterController: UIViewController {
 
-    @IBOutlet weak var detailImageView: UIImageView! {
-        didSet {
-            detailImageView.clipsToBounds = true
-            detailImageView.layer.cornerRadius = 12
-        }
-    }
-    @IBOutlet weak var detailNameLabel: UILabel!
-    @IBOutlet weak var detailStatusLabel: UILabel!
-    @IBOutlet weak var detailGenderLabel: UILabel!
-    
-    @IBOutlet weak var detailSpeciesLabel: UILabel!
-    
-    @IBOutlet weak var detailCreatedLabel: UILabel!
-    @IBOutlet weak var detailOriginLabel: UILabel!
-    @IBOutlet weak var detailLocationLabel: UILabel!
-    @IBOutlet weak var detailEpisodeLabel: UILabel!
-    
-    var characters: CharacterResult?
-    
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var infoTextView: UITextView!
+
+    var digimonID: Int = -1
+    var viewModel: CharactersViewModel?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        initView()
-    }
-    
-    private func initView() {
-        guard let data = characters else { return }
-        
-        self.navigationItem.title = data.name
-        
-        self.detailImageView.loadImageUsingCacheWithUrlString(data.image)
-        
-        self.detailNameLabel.text = data.name
-        self.detailStatusLabel.text = "Status: \(data.status)"
-        self.detailGenderLabel.text = "Gender: \(data.gender)"
-        self.detailSpeciesLabel.text = "Species: \(data.species)"
-        
-        self.detailCreatedLabel.text = data.created.convertStringToDateString()
-        
-        self.detailOriginLabel.text = data.origin.name
-        self.detailLocationLabel.text = data.location.name
-        
-        self.detailEpisodeLabel.text = "\(data.episode.joined(separator: "\n"))"
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = false
-        self.tabBarController?.tabBar.isHidden = true
+        title = "Detail"
+
+        nameLabel.text = "-"
+        infoTextView.text = ""
+
+        loadDetail()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.tabBarController?.tabBar.isHidden = false
-        navigationController?.navigationBar.prefersLargeTitles = true
+    private func loadDetail() {
+        guard digimonID != -1 else { return }
+
+        viewModel?.fetchDetail(id: digimonID) { [weak self] result in
+            guard let self else { return }
+
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+
+                switch result {
+                case .success(let d):
+                    self.title = d.name
+                    self.nameLabel.text = d.name
+                    self.imageView.loadImage(from: d.image)
+
+                    func join(_ arr: [String]) -> String { arr.isEmpty ? "-" : arr.joined(separator: ", ") }
+
+                    self.infoTextView.text =
+                    """
+                    Attribute: \(join(d.attributes))
+                    Level: \(join(d.levels))
+                    Type: \(join(d.types))
+                    Fields: \(join(d.fields))
+                    """
+
+                case .failure(let err):
+                    self.infoTextView.text = err.localizedDescription
+                }
+            }
+        }
     }
 }

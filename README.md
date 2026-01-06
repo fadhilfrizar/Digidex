@@ -47,8 +47,6 @@ Users can search and filter Digimon, and tap a card to view detailed information
 - Mapper layer for data transformation
 - CocoaPods for dependency management
 
-The architecture is kept simple and modular, suitable for a take-home assessment.
-
 ---
 
 ## API

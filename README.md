@@ -1,176 +1,121 @@
-Digidex
+# Digidex
 
-A simple iOS application built with Swift 5 that consumes the free Digi-API to display Digimon cards.
+Digidex is a simple iOS application built using **Swift 5** that consumes the public **Digi-API** to display Digimon data.
 
-This project demonstrates:
+This project is created as a technical assessment and focuses on **clean architecture, pagination, and error handling**, rather than complex UI or animations.
 
-Pagination with 8 cards per page
+---
 
-Infinite scroll
+## Description
 
-Search and filtering
+The application displays Digimon in a **card-based grid layout** with image and name.
 
-Digimon card list and detail views
+Each page loads **8 Digimon at a time**.  
+When the user scrolls to the bottom, the next page is fetched automatically.
 
-Clean architecture (MVVM / Service / Mapper)
+Users can search and filter Digimon, and tap a card to view detailed information.
 
-Basic error handling (no internet / API errors)
+---
 
-Unit tests and UI tests
+## Features
 
-📱 App Overview
+- Digimon card list (image + name)
+- Pagination (8 items per page)
+- Infinite scrolling
+- Search Digimon by name
+- Filter by:
+  - Attribute
+  - Level
+  - Type
+  - Field
+- Digimon detail page
+- Error handling:
+  - No internet connection
+  - API failure
+- Swift 5
+- UIKit
+- Auto Layout
+- No retain cycle
 
-Digidex shows a list of Digimon in a grid layout.
-Each screen displays:
+---
 
-Digimon image and name
+## Architecture
 
-Infinite scroll — load 8 cards at a time
+- UIKit
+- MVVM
+- URLSession for networking
+- Mapper layer for data transformation
+- CocoaPods for dependency management
 
-Search by name
+The architecture is kept simple and modular, suitable for a take-home assessment.
 
-Filter options (attribute, level, type, field)
+---
 
-Detail page with additional Digimon information
+## API
 
-🧱 Architecture
-
-This app is structured using a clean and modular approach inspired by common iOS assessment patterns:
-
-Digidex
-├── AppDelegate/SceneDelegate
-├── Services
-│   ├── HTTPClient.swift
-│   └── DigimonServiceAPI.swift
-├── Mapper
-│   └── CharacterMapper.swift
-├── ViewModel
-│   └── CharactersViewModel.swift
-├── Views
-│   ├── CharactersListController.swift
-│   └── DetailCharacterController.swift
-├── Helpers
-│   ├── UIImageView+Helper.swift
-│   └── Reachability.swift
-├── Supporting Files
-│   ├── Assets.xcassets
-│   └── Info.plist
-├── DigidexTests
-└── DigidexUITests
-
-⚙️ Features
-✅ Pagination
-
-Loads 8 Digimon per page
-
-Appends next set automatically when scrolling near bottom
-
-🔍 Search & Filter
-
-Search by name
-
-Filter by:
-
-Attribute
-
-Level
-
-Type
-
-Field
-
-🔎 Detail Page
-
-Larger image
-
-Lists of attributes, types, levels and fields
-
-📶 Error Handling
-
-No Internet
-
-API failures
-
-Graceful fallback UI
-
-🧪 Testing
-
-Unit tests for Mapper and ViewModel
-
-Minimal UI tests for basic navigation flow
-
-📦 Dependencies
-
-Managed through CocoaPods:
-
-FittedSheets – for filter modal
-
-(Others can be added if needed)
-
-To install dependencies:
-
-pod install
-
-🧪 Running Tests
-Unit Tests
-
-Navigate to DigidexTests and run:
-
-Product > Test in Xcode
-
-or ⌘ + U
-
-UI Tests
-
-Navigate to DigidexUITests and run:
-
-Same as above
-
-Ensures basic interaction (launch → list → detail)
-
-📌 API Used
-
-Digi-API
-Base URL:
+This app uses a free public API:
 
 https://digi-api.com/api/v1
 
 
-Endpoints:
+Main endpoints:
+- `GET /digimon`
+- `GET /digimon/{id}`
 
-List Digimon: GET /digimon
+---
 
-Digimon detail: GET /digimon/{id}
+## Pagination
 
-🪩 Notes
+- Initial request loads **8 Digimon**
+- When user scrolls near the bottom:
+  - Next page is fetched
+  - 8 new items are appended
+- Pagination stops automatically when no more data is returned
 
-UI is kept simple and functional
+---
 
-Architecture focuses on separation of concerns
+## Error Handling
 
-Designed to be clear and easy to extend
+Error handling is implemented in the networking layer and propagated to the UI through the ViewModel.
 
-Some filters may be applied client-side depending on API support
+Handled cases:
+- No internet connection
+- Invalid response
+- API error
+- Decoding failure
 
-📷 Screenshots (Optional)
+---
 
-You can optionally add screenshots here using Markdown:
+## Dependencies
 
-![List Screen](path/to/list.png)
-![Detail Screen](path/to/detail.png)
+Managed using **CocoaPods**:
 
-🧠 Submission Ready
+- FittedSheets
 
-This project is suitable for take-home technical assessments, demonstrating:
+Install dependencies using:
 
-Clear architecture
+```bash
+pod install
+```
+Testing
+Unit Tests
 
-Pagination logic
+Mapper tests
 
-Decoupled networking
+ViewModel tests (pagination & parameters)
 
-Readable code
+UI Tests
 
-Testing strategy
+Basic flow:
 
-Basic but functional UI
+App launch
+
+Digimon list loaded
+
+Navigate to detail screen
+
+Tests are located in:
+
+DigidexTests
+
+DigidexUITests

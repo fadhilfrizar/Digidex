@@ -97,25 +97,18 @@ Install dependencies using:
 ```bash
 pod install
 ```
-Testing
-Unit Tests
+## Testing
 
-Mapper tests
+### Unit Tests
+- Mapper tests
+- ViewModel tests (pagination & parameters)
 
-ViewModel tests (pagination & parameters)
-
-UI Tests
-
-Basic flow:
-
-App launch
-
-Digimon list loaded
-
-Navigate to detail screen
+### UI Tests
+- Basic flow:
+  - App launch
+  - Digimon list loaded
+  - Navigate to detail screen
 
 Tests are located in:
-
-DigidexTests
-
-DigidexUITests
+- `DigidexTests`
+- `DigidexUITests`

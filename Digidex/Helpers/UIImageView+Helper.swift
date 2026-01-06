@@ -2,8 +2,6 @@
 //  UIImageView+Helper.swift
 //  RickAndMorty
 //
-//  Simple image loader (no extra pods required)
-//
 
 import UIKit
 
